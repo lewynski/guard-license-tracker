@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guard Registration System</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; background-color: #f4f4f9; max-width: 600px; margin: auto; }
+        .form-container { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        input, button { width: 100%; padding: 10px; margin: 10px 0; border-radius: 4px; border: 1px solid #ccc; box-sizing: border-box; }
+        .btn-submit { background: #28a745; color: white; border: none; cursor: pointer; font-weight: bold; }
+        .btn-ai { background: #007bff; color: white; border: none; cursor: pointer; }
+        #ai-status { font-size: 0.9em; color: #555; }
+    </style>
+</head>
+<body>
+
+    <div class="form-container">
+        <h2>Register New Security Guard</h2>
+        
+        <div style="background: #e9ecef; padding: 15px; border-radius: 5px; margin-bottom: 20px;">
+            <h3>AI License Scanner</h3>
+            <p>Upload a picture of the license to automatically extract data.</p>
+            <input type="file" id="license-image" accept="image/*">
+            <button type="button" class="btn-ai" onclick="scanID()">Scan ID with AI</button>
+            <p id="ai-status"></p>
+        </div>
+
+        <form id="guardForm">
+            <label>Full Name:</label>
+            <input type="text" id="name" required>
+
+            <label>License Number:</label>
+            <input type="text" id="license_number" required>
+
+            <label>Email Address (For Notifications):</label>
+            <input type="email" id="email" required>
+
+            <label>Expiration Date:</label>
+            <input type="date" id="expiration_date" required>
+
+            <button type="submit" class="btn-submit">Save to Database</button>
+        </form>
+    </div>
+
+    <script>
+        // 1. Initialize Supabase (Use the SAME keys you used in admin.html)
+        const SUPABASE_URL = 'YOUR_SUPABASE_PROJECT_URL';
+        const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY';
+        const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        // 2. AI Scanner Function (Tesseract.js)
+        async function scanID() {
+            const imageInput = document.getElementById('license-image');
+            const statusText = document.getElementById('ai-status');
+
+            if (imageInput.files.length === 0) {
+                alert("Please select an image first.");
+                return;
+            }
+
+            statusText.innerText = "AI is scanning the ID... Please wait.";
+            const imageFile = imageInput.files[0];
+
+            try {
+                // Run the AI to recognize text in the image
+                const result = await Tesseract.recognize(imageFile, 'eng');
+                const extractedText = result.data.text;
+                
+                statusText.innerText = "Scan complete! Review the extracted text in the console to map it to the form.";
+                console.log("AI Extracted Text:", extractedText);
+                
+                // Note: To automatically fill the form, you will need to write a small 
+                // JavaScript function here that searches 'extractedText' for dates/numbers.
+                
+            } catch (error) {
+                statusText.innerText = "Error scanning image.";
+                console.error(error);
+            }
+        }
+
+        // 3. Save Data to Supabase
+        document.getElementById('guardForm').addEventListener('submit', async function(e) {
+            e.preventDefault(); // Prevent page refresh
+
+            const name = document.getElementById('name').value;
+            const license_number = document.getElementById('license_number').value;
+            const email = document.getElementById('email').value;
+            const expiration_date = document.getElementById('expiration_date').value;
+
+            // Insert into the 'guards' table
+            const { data, error } = await supabase.from('guards').insert([
+                { name: name, license_number: license_number, email: email, expiration_date: expiration_date }
+            ]);
+
+            if (error) {
+                alert("Error saving data: " + error.message);
+                console.error(error);
+            } else {
+                alert("Guard successfully registered!");
+                document.getElementById('guardForm').reset(); // Clear the form
+            }
+        });
+    </script>
+</body>
+</html>

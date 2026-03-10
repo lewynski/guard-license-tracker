@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Guard Licenses</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; background-color: #f4f4f9; }
+        .guard-card { 
+            background: white; 
+            padding: 15px; 
+            margin-bottom: 10px; 
+            border-radius: 8px; 
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .guard-details { margin: 0; }
+        .delete-btn { 
+            background: #ff4d4d; 
+            color: white; 
+            border: none; 
+            padding: 8px 12px; 
+            cursor: pointer; 
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Security Guard Database (Admin Panel)</h2>
+    
+    <div id="guard-list">Loading guards...</div>
+
+    <script>
+        // 1. Initialize Supabase (Replace these with your actual Supabase project details)
+        const SUPABASE_URL = 'YOUR_SUPABASE_PROJECT_URL';
+        const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY';
+        
+        const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        // 2. Function to fetch and display the list of guards
+        async function fetchGuards() {
+            const guardListDiv = document.getElementById('guard-list');
+            guardListDiv.innerHTML = 'Loading...';
+
+            // Pull data from the 'guards' table
+            const { data, error } = await supabase.from('guards').select('*');
+
+            if (error) {
+                console.error("Error fetching data:", error);
+                guardListDiv.innerHTML = '<p>Error loading data.</p>';
+                return;
+            }
+
+            // Clear the loading text
+            guardListDiv.innerHTML = '';
+
+            // Display each guard as a card
+            data.forEach(guard => {
+                const card = document.createElement('div');
+                card.className = 'guard-card';
+                card.innerHTML = `
+                    <div class="guard-details">
+                        <h3>${guard.name}</h3>
+                        <p><strong>License Number:</strong> ${guard.license_number}</p>
+                        <p><strong>Expiration Date:</strong> ${guard.expiration_date}</p>
+                    </div>
+                    <button class="delete-btn" onclick="deleteGuard(${guard.id})">Remove Guard</button>
+                `;
+                guardListDiv.appendChild(card);
+            });
+        }
+
+        // 3. Function to delete a guard
+        async function deleteGuard(guardId) {
+            // Confirm with the admin before deleting
+            if (!confirm("Are you sure you want to remove this guard?")) return;
+
+            const { error } = await supabase.from('guards').delete().eq('id', guardId);
+
+            if (error) {
+                alert("Failed to delete the guard.");
+                console.error(error);
+            } else {
+                alert("Guard removed successfully!");
+                // Refresh the list so the deleted guard disappears
+                fetchGuards(); 
+            }
+        }
+
+        // 4. Run the fetch function when the page loads
+        window.onload = fetchGuards;
+    </script>
+
+</body>
+</html>
