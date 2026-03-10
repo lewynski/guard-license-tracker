@@ -2,212 +2,155 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Login | Aegis Security</title>
+    <title>Admin Dashboard</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --primary-color: #0f172a; 
-            --accent-color: #2563eb; 
-            --bg-color: #f8fafc; 
-            --text-color: #334155;
-            --danger-color: #ef4444;
-        }
-        body { font-family: 'Inter', sans-serif; margin: 0; background-color: var(--bg-color); color: var(--text-color); }
+        :root { --primary: #0f172a; --accent: #2563eb; --bg: #f8fafc; --text: #334155; --success: #22c55e; --danger: #ef4444; }
+        body { font-family: 'Inter', sans-serif; margin: 0; background: var(--bg); color: var(--text); }
         
-        /* Navbar Styling */
-        header {
-            background-color: var(--primary-color);
-            color: white;
-            padding: 15px 40px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-        .logo { font-size: 1.5em; font-weight: 700; letter-spacing: 0.5px; }
-        .logo span { color: var(--accent-color); }
-        .nav-links a { color: #cbd5e1; text-decoration: none; margin-left: 20px; font-weight: 500; transition: color 0.3s; }
-        .nav-links a:hover { color: white; }
-
-        /* Container Layout */
-        .container { max-width: 900px; margin: 40px auto; padding: 0 20px; }
+        header { background: var(--primary); color: white; padding: 15px 40px; display: flex; justify-content: space-between; }
+        .logo { font-size: 1.5em; font-weight: bold; }
         
-        /* Login Screen Styling */
-        #login-screen {
-            max-width: 400px;
-            margin: 80px auto;
-            background: white;
-            padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
-            text-align: center;
-        }
-        #login-screen h2 { color: var(--primary-color); margin-top: 0; margin-bottom: 20px; }
-        .login-input { 
-            width: 100%; 
-            padding: 12px; 
-            margin-bottom: 15px; 
-            border-radius: 6px; 
-            border: 1px solid #cbd5e1; 
-            box-sizing: border-box; 
-            font-family: 'Inter', sans-serif;
-        }
-        .btn-login { 
-            background: var(--accent-color); 
-            color: white; 
-            border: none; 
-            padding: 14px; 
-            width: 100%;
-            border-radius: 6px;
-            cursor: pointer; 
-            font-weight: 600; 
-            transition: background 0.3s;
-        }
-        .btn-login:hover { background: #1d4ed8; }
-        #login-error { color: var(--danger-color); font-size: 0.9em; margin-top: 10px; display: none; }
-
-        /* Dashboard Layout (Hidden by default) */
-        #dashboard-screen { display: none; }
-        .dashboard-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #e2e8f0; padding-bottom: 15px; margin-bottom: 30px; }
-        .dashboard-header h2 { margin: 0; color: var(--primary-color); }
+        /* Login Screen */
+        #login-screen { max-width: 350px; margin: 100px auto; background: white; padding: 30px; border-radius: 8px; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        input { width: 100%; padding: 10px; margin-bottom: 15px; border-radius: 4px; border: 1px solid #ccc; box-sizing: border-box;}
+        button { cursor: pointer; padding: 10px 15px; border-radius: 4px; border: none; font-weight: bold; color: white;}
+        .btn-login { background: var(--accent); width: 100%; }
         
-        /* Card Grid */
-        #guard-list { display: grid; gap: 20px; grid-template-columns: repeat(auto-fill, minmax(400px, 1fr)); }
+        /* Dashboard Screen */
+        #dashboard-screen { display: none; max-width: 1000px; margin: 30px auto; padding: 0 20px; }
+        .section-box { background: white; padding: 20px; border-radius: 8px; margin-bottom: 30px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); border-top: 4px solid var(--primary); }
         
-        .guard-card { 
-            background: white; 
-            padding: 25px; 
-            border-radius: 10px; 
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-            border-left: 5px solid var(--accent-color);
-            position: relative;
-        }
-        .guard-details h3 { margin: 0 0 15px 0; color: var(--primary-color); font-size: 1.2em; }
-        .guard-details p { margin: 8px 0; font-size: 0.95em; color: #475569; }
+        .grid { display: grid; gap: 15px; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); }
+        .card { background: var(--bg); padding: 15px; border-radius: 6px; border: 1px solid #e2e8f0; }
+        .card h3 { margin: 0 0 10px 0; }
         
-        .delete-btn { 
-            background: white; 
-            color: var(--danger-color); 
-            border: 1px solid var(--danger-color); 
-            padding: 6px 12px; 
-            cursor: pointer; 
-            border-radius: 4px;
-            font-weight: 500;
-            font-size: 0.85em;
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            transition: all 0.2s;
-        }
-        .delete-btn:hover { background: var(--danger-color); color: white; }
+        /* Action Buttons */
+        .btn-accept { background: var(--success); }
+        .btn-reject, .btn-revoke { background: var(--danger); }
+        .btn-edit { background: var(--primary); }
+        .actions { display: flex; gap: 10px; margin-top: 15px; }
     </style>
 </head>
 <body>
 
     <header>
-        <div class="logo">Aegis <span>Security Solutions</span></div>
-        <div class="nav-links">
-            <a href="index.html">Portal Home</a>
-            <a href="admin.html">Admin Dashboard</a>
-        </div>
+        <div class="logo">Aegis Admin</div>
+        <a href="index.html" style="color: white; text-decoration: none; margin-top: 5px;">Back to Portal</a>
     </header>
-    
+
     <div id="login-screen">
-        <h2>Authorized Access Only</h2>
-        <input type="text" id="username" class="login-input" placeholder="Admin Username">
-        <input type="password" id="password" class="login-input" placeholder="Password">
-        <button class="btn-login" onclick="attemptLogin()">Secure Login</button>
-        <p id="login-error">Incorrect username or password.</p>
+        <h2>System Login</h2>
+        <input type="text" id="username" placeholder="Username">
+        <input type="password" id="password" placeholder="Password">
+        <button class="btn-login" onclick="login()">Enter Dashboard</button>
+        <p id="error-msg" style="color: red; display: none; font-size: 0.9em;">Access Denied.</p>
     </div>
 
-    <div id="dashboard-screen" class="container">
-        <div class="dashboard-header">
-            <h2>Active Roster & License Status</h2>
-            <button onclick="logout()" style="padding: 8px 15px; cursor: pointer; border-radius: 5px; border: 1px solid #ccc;">Log Out</button>
+    <div id="dashboard-screen">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <h2>Management Console</h2>
+            <button style="background: #64748b;" onclick="location.reload()">Log Out</button>
         </div>
-        <div id="guard-list">Loading secure database...</div>
+
+        <div class="section-box">
+            <h3>Pending Applications (Needs Review)</h3>
+            <div id="pending-list" class="grid">Loading...</div>
+        </div>
+
+        <div class="section-box" style="border-top-color: var(--success);">
+            <h3>Active Guard Roster</h3>
+            <div id="active-list" class="grid">Loading...</div>
+        </div>
     </div>
 
     <script>
-        // --- LOGIN LOGIC ---
-        function attemptLogin() {
-            const user = document.getElementById('username').value;
-            const pass = document.getElementById('password').value;
-            const errorMsg = document.getElementById('login-error');
-
-            // Set your desired username and password here!
-            if (user === 'admin' && pass === 'security2026') {
+        // --- LOGIN ---
+        function login() {
+            const u = document.getElementById('username').value;
+            const p = document.getElementById('password').value;
+            if (u === 'admin' && p === 'security2026') {
                 document.getElementById('login-screen').style.display = 'none';
                 document.getElementById('dashboard-screen').style.display = 'block';
-                fetchGuards(); // Only connect to the database AFTER successful login
+                fetchData();
             } else {
-                errorMsg.style.display = 'block';
+                document.getElementById('error-msg').style.display = 'block';
             }
         }
 
-        function logout() {
-            document.getElementById('login-screen').style.display = 'block';
-            document.getElementById('dashboard-screen').style.display = 'none';
-            document.getElementById('username').value = '';
-            document.getElementById('password').value = '';
-        }
-
-        // --- DATABASE LOGIC ---
-        // 1. Initialize Supabase
+        // --- DATABASE SETUP ---
         const SUPABASE_URL = 'https://tojcimhuslpbpkmkvvsz.supabase.co';
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRvamNpbWh1c2xwYnBrbWt2dnN6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMxMDg0MDcsImV4cCI6MjA4ODY4NDQwN30.rmatxYCKks8CKhdtesRwrITx06he4-AjgmLhlsEFzxo';
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        // 2. Fetch and display guards
-        async function fetchGuards() {
-            const guardListDiv = document.getElementById('guard-list');
-            guardListDiv.innerHTML = '<p style="text-align:center; width:100%; color:#64748b;">Syncing with database...</p>';
-
+        // --- FETCH & RENDER DATA ---
+        async function fetchData() {
             const { data, error } = await supabaseClient.from('guards').select('*');
+            if (error) { alert("Error fetching data!"); return; }
 
-            if (error) {
-                guardListDiv.innerHTML = '<p style="color:red;">Error establishing secure connection.</p>';
-                return;
-            }
+            const pendingDiv = document.getElementById('pending-list');
+            const activeDiv = document.getElementById('active-list');
+            pendingDiv.innerHTML = ''; activeDiv.innerHTML = '';
 
-            guardListDiv.innerHTML = '';
-            
-            if (data.length === 0) {
-                guardListDiv.innerHTML = '<p>No personnel records found.</p>';
-                return;
-            }
+            let hasPending = false; let hasActive = false;
 
-            data.forEach(guard => {
-                const card = document.createElement('div');
-                card.className = 'guard-card';
-                card.innerHTML = `
-                    <div class="guard-details">
-                        <h3>${guard.name}</h3>
-                        <p><strong>License ID:</strong> ${guard.license_number}</p>
-                        <p><strong>Contact:</strong> ${guard.email}</p>
-                        <p><strong>Expires On:</strong> ${guard.expiration_date}</p>
+            data.forEach(g => {
+                const cardHtml = `
+                    <div class="card">
+                        <h3>${g.name}</h3>
+                        <p><strong>License:</strong> ${g.license_number}</p>
+                        <p><strong>Email:</strong> ${g.email}</p>
+                        <p><strong>Expires:</strong> ${g.expiration_date}</p>
+                        <div class="actions">
+                            ${g.status === 'pending' ? `
+                                <button class="btn-accept" onclick="updateStatus(${g.id}, 'approved')">Accept</button>
+                                <button class="btn-reject" onclick="deleteRecord(${g.id})">Reject</button>
+                            ` : `
+                                <button class="btn-edit" onclick="editRecord(${g.id}, '${g.name}', '${g.expiration_date}')">Edit</button>
+                                <button class="btn-revoke" onclick="deleteRecord(${g.id})">Revoke</button>
+                            `}
+                        </div>
                     </div>
-                    <button class="delete-btn" onclick="deleteGuard(${guard.id})">Revoke</button>
                 `;
-                guardListDiv.appendChild(card);
+
+                if (g.status === 'pending') { pendingDiv.innerHTML += cardHtml; hasPending = true; } 
+                else { activeDiv.innerHTML += cardHtml; hasActive = true; }
             });
+
+            if (!hasPending) pendingDiv.innerHTML = "<p>No pending applications.</p>";
+            if (!hasActive) activeDiv.innerHTML = "<p>No active guards.</p>";
         }
 
-        // 3. Delete a guard
-        async function deleteGuard(guardId) {
-            if (!confirm("WARNING: Are you sure you want to permanently revoke this record?")) return;
+        // --- ADMIN ACTIONS ---
+        async function updateStatus(id, newStatus) {
+            await supabaseClient.from('guards').update({ status: newStatus }).eq('id', id);
+            fetchData();
+        }
 
-            const { error } = await supabaseClient.from('guards').delete().eq('id', guardId);
-
-            if (error) {
-                alert("System Error: Could not remove record.");
-            } else {
-                fetchGuards(); 
+        async function deleteRecord(id) {
+            if(confirm("Are you sure you want to permanently delete this record?")) {
+                await supabaseClient.from('guards').delete().eq('id', id);
+                fetchData();
             }
+        }
+
+        async function editRecord(id, currentName, currentDate) {
+            // Using built-in browser prompts for quick editing
+            const newName = prompt("Edit Name:", currentName);
+            if (newName === null) return; // Cancelled
+            
+            const newDate = prompt("Edit Expiration Date (YYYY-MM-DD):", currentDate);
+            if (newDate === null) return;
+
+            const { error } = await supabaseClient.from('guards').update({ 
+                name: newName, 
+                expiration_date: newDate 
+            }).eq('id', id);
+
+            if (error) alert("Error updating record.");
+            else fetchData();
         }
     </script>
-
 </body>
 </html>
