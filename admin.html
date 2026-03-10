@@ -7,21 +7,13 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
-        :root { 
-            --primary: #0f172a; 
-            --accent: #16a34a; 
-            --bg: #f8fafc; 
-            --text: #334155; 
-            --success: #16a34a; /* Matched to new accent green */
-            --danger: #ef4444; 
-        }
+        :root { --primary: #0f172a; --accent: #16a34a; --bg: #f8fafc; --text: #334155; --success: #16a34a; --danger: #ef4444; }
         body { font-family: 'Inter', sans-serif; margin: 0; background: var(--bg); color: var(--text); }
         
         header { background: #fff; color: var(--primary); padding: 15px 40px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e2e8f0; }
         .logo { font-size: 1.5em; font-weight: bold; }
         .logo span { color: var(--accent); }
         
-        /* Login Screen */
         #login-screen { max-width: 350px; margin: 100px auto; background: white; padding: 40px; border-radius: 8px; text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; }
         #login-screen h2 { color: var(--primary); margin-top: 0; margin-bottom: 25px; }
         input { width: 100%; padding: 12px; margin-bottom: 15px; border-radius: 5px; border: 1px solid #ccc; box-sizing: border-box; font-family: 'Inter'; }
@@ -29,7 +21,6 @@
         button:hover { opacity: 0.9; }
         .btn-login { background: var(--accent); width: 100%; padding: 12px; font-size: 1.1em; }
         
-        /* Dashboard Screen */
         #dashboard-screen { display: none; max-width: 1200px; margin: 40px auto; padding: 0 20px; }
         .dashboard-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
         .dashboard-header h2 { color: var(--primary); margin: 0; font-size: 2em; }
@@ -43,12 +34,20 @@
         .card h3 { margin: 0 0 15px 0; color: var(--primary); border: none; padding: 0; font-size: 1.2em; }
         .card p { margin: 8px 0; font-size: 0.95em; }
         
-        /* Action Buttons */
         .btn-accept { background: var(--success); }
         .btn-reject, .btn-revoke { background: var(--danger); }
         .btn-edit { background: var(--primary); }
         .actions { display: flex; gap: 10px; margin-top: 20px; }
         .actions button { flex: 1; padding: 8px; }
+
+        /* MOBILE RESPONSIVE CSS */
+        @media (max-width: 768px) {
+            header { flex-direction: column; padding: 20px; gap: 15px; }
+            #login-screen { margin: 40px auto; width: 80%; padding: 25px; }
+            .dashboard-header { flex-direction: column; gap: 15px; text-align: center; }
+            .section-box { padding: 15px; }
+            .grid { grid-template-columns: 1fr; }
+        }
     </style>
 </head>
 <body>
@@ -84,7 +83,6 @@
     </div>
 
     <script>
-        // --- LOGIN ---
         function login() {
             const u = document.getElementById('username').value;
             const p = document.getElementById('password').value;
@@ -97,12 +95,10 @@
             }
         }
 
-        // --- DATABASE SETUP ---
         const SUPABASE_URL = 'https://tojcimhuslpbpkmkvvsz.supabase.co';
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRvamNpbWh1c2xwYnBrbWt2dnN6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMxMDg0MDcsImV4cCI6MjA4ODY4NDQwN30.rmatxYCKks8CKhdtesRwrITx06he4-AjgmLhlsEFzxo';
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        // --- FETCH & RENDER DATA ---
         async function fetchData() {
             const { data, error } = await supabaseClient.from('guards').select('*');
             if (error) { alert("Error fetching data!"); return; }
@@ -113,7 +109,6 @@
 
             let hasPending = false; let hasActive = false;
 
-            // Sort data so newest applications appear first
             data.sort((a, b) => new Date(b.created_at || 0) - new Date(a.created_at || 0));
 
             data.forEach(g => {
@@ -143,7 +138,6 @@
             if (!hasActive) activeDiv.innerHTML = "<p style='color: #64748b;'>No active guards in the roster.</p>";
         }
 
-        // --- ADMIN ACTIONS ---
         async function updateStatus(id, newStatus) {
             await supabaseClient.from('guards').update({ status: newStatus }).eq('id', id);
             fetchData();
