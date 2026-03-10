@@ -3,17 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bandai Wireharness Philippines Inc.</title>
+    <title>Aegis Security Solutions</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         :root { 
             --primary: #0f172a; /* Dark gray for text and primary elements */
-            --accent: #16a34a;  /* Bright green for active links and accents */
+            --accent: #16a34a;  /* Bright green from your concept */
             --bg: #f8fafc;       /* Light gray background for cards */
             --text: #334155;     /* Darker gray for body text */
             --light-green-bg: #e0f2f1; /* Light green for list items, etc. */
-            --placeholder-hero-url: url('https://images.unsplash.com/photo-1520004434532-6684164f378d?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+            --placeholder-hero-url: url('https://images.unsplash.com/photo-1510511459019-5efa7c243774?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'); /* Security/City aesthetic */
         }
         body { font-family: 'Inter', sans-serif; margin: 0; background: #fff; color: var(--text); }
         
@@ -22,7 +22,6 @@
             background: #fff; color: var(--primary); padding: 15px 40px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e2e8f0;
         }
         .logo { font-size: 1.5em; font-weight: 700; display: flex; align-items: center; gap: 8px; }
-        .logo img { height: 1.8em; } /* Bandai mountain logo */
         .logo span { color: var(--accent); }
         
         .nav-links { display: flex; gap: 20px; align-items: center;}
@@ -54,7 +53,7 @@
         #home-hero::before {
             content: '';
             position: absolute; top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.5); /* Light overlay for text readability */
+            background: rgba(0,0,0,0.6); /* Darker overlay for text readability */
         }
         .hero-content {
             position: relative;
@@ -65,7 +64,7 @@
         .hero-subtitle { font-size: 1.2em; max-width: 800px; margin: 0 auto 30px auto; color: #fff;}
         .hero-social-text { font-size: 0.9em; color: #cbd5e1; margin-bottom: 15px;}
         .hero-social-icons { display: flex; gap: 20px; justify-content: center; font-size: 1.2em; }
-        .hero-social-icons a { color: #fff; text-decoration: none; }
+        .hero-social-icons a { color: #fff; text-decoration: none; font-weight: bold; }
         
         /* Apply Call-to-action Section */
         #apply-cta {
@@ -90,13 +89,13 @@
         .faq-item:last-child { border-bottom: none; }
         .faq-question { font-weight: 600; display: flex; justify-content: space-between; color: var(--primary);}
         .faq-answer { display: none; margin-top: 15px; color: var(--text); line-height: 1.6;}
-        .back-to-top { position: fixed; bottom: 20px; right: 20px; background: #fff; color: var(--accent); border: 2px solid var(--accent); padding: 10px; border-radius: 50%; cursor: pointer; text-align: center; font-size: 1.2em;}
+        .back-to-top { position: fixed; bottom: 20px; right: 20px; background: #fff; color: var(--accent); border: 2px solid var(--accent); padding: 10px; border-radius: 50%; cursor: pointer; text-align: center; font-size: 1.2em; z-index: 100;}
         
         /* Contact Form Section */
         #contact { padding: 80px 40px; background: #fff; }
         .contact-card { background: var(--bg); padding: 40px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); max-width: 600px; margin: 0 auto; }
         .contact-title { text-align: center; color: var(--primary); font-size: 2em; margin-bottom: 30px;}
-        .form-box { border: 1px solid #ccc; padding: 20px; border-radius: 5px;}
+        .form-box { background: white; border: 1px solid #e2e8f0; padding: 20px; border-radius: 5px;}
         
         /* Content Styling (Roster and Application Form) */
         .card { background: var(--bg); padding: 30px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 20px; border: 1px solid #e2e8f0; }
@@ -106,11 +105,11 @@
         /* Form */
         label { display: block; font-weight: 500; margin-bottom: 5px; color: var(--primary); margin-top: 15px;}
         input, textarea { width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc; box-sizing: border-box; }
-        textarea { height: 120px; }
+        textarea { height: 120px; resize: vertical; }
         .btn-green-solid { background: var(--accent); color: white; border: none; padding: 12px 20px; border-radius: 5px; cursor: pointer; font-weight: bold; margin-top: 20px; width: 100%;}
         
         /* Guard List (Roster) */
-        #list { padding: 60px 40px; }
+        #list { padding: 60px 40px; max-width: 1000px; margin: 0 auto; }
         .controls { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
         select { padding: 8px; border-radius: 5px; border: 1px solid #ccc;}
         .roster-item { display: flex; justify-content: space-between; border-bottom: 1px solid #eee; padding: 15px; background: #fff; border-radius: 5px; margin-bottom: 10px; }
@@ -127,8 +126,7 @@
 
     <header>
         <div class="logo">
-            <img src="https://images.unsplash.com/photo-1549416809-567c9c22881a?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="BANDAI Logo">
-            <span>Bandai</span> Wireharness Philippines Inc.
+            Aegis <span>Security</span>
         </div>
         <div class="nav-links">
             <button id="nav-home" onclick="showPage('home')" class="active">Home</button>
@@ -141,13 +139,13 @@
     <div class="page-container">
         <section id="home-hero" class="page-section active-section">
             <div class="hero-content">
-                <h1 class="hero-title">Harnessing the Power of Limitless Connections</h1>
-                <p class="hero-subtitle">Advancing forward with our clients, we will strive to become a reliable company so as to respond to the social globalization.</p>
-                <p class="hero-social-text">Catch us on social media accounts to stay updated!</p>
+                <h1 class="hero-title">Uncompromising Security for a Changing World</h1>
+                <p class="hero-subtitle">Aegis Security Solutions is the premier provider of highly trained, licensed security personnel. We ensure peace of mind through vigilant protection and modern tracking systems.</p>
+                <p class="hero-social-text">Follow our social media accounts to stay updated!</p>
                 <div class="hero-social-icons">
-                    <a href="#" target="_blank">F</a>
-                    <a href="#" target="_blank">Y</a>
-                    <a href="#" target="_blank">L</a>
+                    <a href="#">Fb</a>
+                    <a href="#">Tw</a>
+                    <a href="#">In</a>
                 </div>
             </div>
         </section>
@@ -158,13 +156,13 @@
                 <span>•</span>
                 <span>•</span>
             </div>
-            <h2 class="apply-title">Build a future with Bandai Wireharness Philippines Inc.</h2>
-            <p class="apply-subtitle">Embrace opportunity and drive innovation with us</p>
+            <h2 class="apply-title">Build a Future with Aegis Security Solutions</h2>
+            <p class="apply-subtitle">Join our elite team and elevate your career in modern security.</p>
             <button class="btn-transparent-white" onclick="showApplyForm()">Apply Now</button>
         </section>
 
         <section id="list" class="page-section">
-            <h2 class="centered">Active Guard Roster #list</h2>
+            <h2 class="centered">Active Guard Roster</h2>
             <div class="card">
                 <div class="controls">
                     <h3>Active Personnel List</h3>
@@ -177,21 +175,28 @@
             </div>
         </section>
 
-        <section id="faq" class="page-section">
-            <h2 class="faq-title">Frequently asked questions</h2>
-            <div class="faq-list">
+        <section id="faq" class="page-section active-section">
+            <h2 class="faq-title">Frequently Asked Questions</h2>
+            <div class="faq-list" style="max-width: 800px; margin: 0 auto;">
                 <div class="faq-item" onclick="toggleFaq(1)">
                     <div class="faq-question">
-                        <span>What kind of opportunities are available at Bandai Wireharness Philippines Inc.?</span>
-                        <span>v</span>
+                        <span>What kind of opportunities are available at Aegis Security Solutions?</span>
+                        <span>▼</span>
                     </div>
-                    <p class="faq-answer">Bandai Wireharness offers a wide range of career opportunities, from manufacturing and logistics to engineering, quality control, and administration. We have positions for both experienced professionals and entry-level employees, including fresh graduates.</p>
+                    <p class="faq-answer">We offer a wide range of career opportunities, from field security and event protection to corporate administration and modern surveillance systems. We welcome both experienced professionals and individuals seeking fresh entry-level opportunities.</p>
                 </div>
+                <div class="faq-item" onclick="toggleFaq(2)">
+                    <div class="faq-question">
+                        <span>What are the requirements to join the active roster?</span>
+                        <span>▼</span>
+                    </div>
+                    <p class="faq-answer">All applicants must hold a valid, up-to-date security license and pass our preliminary administrative review. Once your application is submitted via our portal, our team will review your credentials for approval.</p>
                 </div>
-            <button class="back-to-top" onclick="scrollToTop()">^</button>
+            </div>
+            <button class="back-to-top" onclick="scrollToTop()">▲</button>
         </section>
         
-        <section id="contact" class="page-section">
+        <section id="contact" class="page-section active-section">
             <h2 class="contact-title">Contact Us</h2>
             <div class="contact-card">
                 <form id="contactForm">
@@ -201,9 +206,9 @@
                         <label>Email Address</label>
                         <input type="email" id="contact_email" required>
                         <label>Message</label>
-                        <textarea id="contact_message" required></textarea>
+                        <textarea id="contact_message" required placeholder="How can we help you today?"></textarea>
                     </div>
-                    <button type="submit" class="btn-green-solid">Submit</button>
+                    <button type="submit" class="btn-green-solid">Send Message</button>
                 </form>
             </div>
         </section>
@@ -249,12 +254,11 @@
                 document.getElementById('nav-list').classList.add('active');
                 loadApprovedGuards(); // Load data when roster page is shown
             } else if (pageId === 'apply') {
-                 // Existing form
                 document.getElementById('apply').classList.add('active-section');
             }
         }
         
-        // Show the existing application form, linking "Apply Now" to it
+        // Show the application form when "Apply Now" is clicked
         function showApplyForm() {
             showPage('apply');
             scrollToTop();
@@ -262,9 +266,7 @@
 
         // --- SECTION NAVIGATION LOGIC ---
         function scrollToSection(sectionId) {
-            // Make sure the home view (where all sections are) is active
             showPage('home');
-            // Scroll to the specific section
             document.getElementById(sectionId).scrollIntoView({ behavior: 'smooth' });
         }
         
@@ -274,19 +276,15 @@
         
         // --- FAQ LOGIC ---
         function toggleFaq(itemId) {
-            // This is a simple logic. For more items, this would need to be improved.
             const item = document.querySelector(`#faq .faq-item:nth-child(${itemId})`);
             const answer = item.querySelector('.faq-answer');
             const arrow = item.querySelector('.faq-question span:last-child');
             
-            // Toggle the answer
             answer.style.display = answer.style.display === 'block' ? 'none' : 'block';
-            
-            // Toggle arrow direction (v / ^)
-            arrow.innerHTML = answer.style.display === 'block' ? '^' : 'v';
+            arrow.innerHTML = answer.style.display === 'block' ? '▲' : '▼';
         }
 
-        // --- DATABASE LOGIC (Keep existing connection and functions) ---
+        // --- DATABASE LOGIC ---
         const SUPABASE_URL = 'https://tojcimhuslpbpkmkvvsz.supabase.co';
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRvamNpbWh1c2xwYnBrbWt2dnN6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMxMDg0MDcsImV4cCI6MjA4ODY4NDQwN30.rmatxYCKks8CKhdtesRwrITx06he4-AjgmLhlsEFzxo';
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
@@ -315,7 +313,6 @@
             const container = document.getElementById('roster-container');
             container.innerHTML = "Fetching live records...";
 
-            // Existing logic to fetch approved guards
             const { data, error } = await supabaseClient.from('guards').select('*').eq('status', 'approved');
             
             if (error) { container.innerHTML = "Error loading data."; return; }
@@ -328,10 +325,8 @@
                 if (sortType === 'name') return a.name.localeCompare(b.name);
             });
 
-            // Keep the same rendering structure but style the items to match the new look
             container.innerHTML = '';
             data.forEach(guard => {
-                // Check if expiration is within 30 days to highlight it red
                 const daysUntilExp = (new Date(guard.expiration_date) - new Date()) / (1000 * 60 * 60 * 24);
                 const dateClass = daysUntilExp < 30 ? 'urgent' : '';
 
@@ -343,6 +338,13 @@
                 `;
             });
         }
+        
+        // Prevent generic contact form submission refresh for the demo
+        document.getElementById('contactForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('Message Sent!');
+            document.getElementById('contactForm').reset();
+        });
     </script>
 </body>
 </html>
