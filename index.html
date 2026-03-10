@@ -3,151 +3,152 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Guard Registration | Aegis Security</title>
+    <title>Aegis Security Solutions</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --primary-color: #0f172a; /* Navy Blue */
-            --accent-color: #2563eb; /* Bright Blue */
-            --bg-color: #f8fafc; /* Light Gray */
-            --text-color: #334155;
-        }
-        body { 
-            font-family: 'Inter', sans-serif; 
-            margin: 0; 
-            background-color: var(--bg-color); 
-            color: var(--text-color);
-        }
-        /* Navbar Styling */
-        header {
-            background-color: var(--primary-color);
-            color: white;
-            padding: 15px 40px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-        .logo {
-            font-size: 1.5em;
-            font-weight: 700;
-            letter-spacing: 0.5px;
-        }
-        .logo span { color: var(--accent-color); }
-        .nav-links a {
-            color: #cbd5e1;
-            text-decoration: none;
-            margin-left: 20px;
-            font-weight: 500;
-            transition: color 0.3s;
-        }
-        .nav-links a:hover { color: white; }
+        :root { --primary: #0f172a; --accent: #2563eb; --bg: #f8fafc; --text: #334155; }
+        body { font-family: 'Inter', sans-serif; margin: 0; background: var(--bg); color: var(--text); }
         
-        /* Main Content Styling */
-        .container {
-            max-width: 600px;
-            margin: 50px auto;
-            background: white;
-            padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+        /* Navigation Bar */
+        header { background: var(--primary); color: white; padding: 15px 40px; display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 1.5em; font-weight: 700; }
+        .logo span { color: var(--accent); }
+        .nav-links { display: flex; gap: 20px; }
+        .nav-links button, .nav-links a { 
+            background: none; border: none; color: #cbd5e1; font-size: 1em; font-family: 'Inter'; cursor: pointer; text-decoration: none; font-weight: 500;
         }
-        h2 { margin-top: 0; color: var(--primary-color); border-bottom: 2px solid #e2e8f0; padding-bottom: 10px; }
-        p.subtitle { color: #64748b; font-size: 0.95em; margin-bottom: 25px; }
+        .nav-links button:hover, .nav-links a:hover { color: white; }
+
+        /* Page Sections */
+        .page-section { display: none; max-width: 800px; margin: 40px auto; padding: 20px; }
+        .active-section { display: block; }
         
-        /* Form Styling */
-        label { display: block; font-weight: 500; margin-bottom: 8px; color: var(--primary-color); }
-        input { 
-            width: 100%; 
-            padding: 12px; 
-            margin-bottom: 20px; 
-            border-radius: 6px; 
-            border: 1px solid #cbd5e1; 
-            box-sizing: border-box; 
-            font-family: 'Inter', sans-serif;
-            transition: border-color 0.3s;
-        }
-        input:focus { outline: none; border-color: var(--accent-color); box-shadow: 0 0 0 3px rgba(37,99,235,0.1); }
+        /* Content Styling */
+        .card { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 20px; }
+        h1, h2 { color: var(--primary); margin-top: 0; }
         
-        .btn-submit { 
-            background: var(--accent-color); 
-            color: white; 
-            border: none; 
-            padding: 14px; 
-            width: 100%;
-            border-radius: 6px;
-            cursor: pointer; 
-            font-weight: 600; 
-            font-size: 1em;
-            transition: background 0.3s;
-        }
-        .btn-submit:hover { background: #1d4ed8; }
+        /* Form */
+        label { display: block; font-weight: 500; margin-bottom: 5px; color: var(--primary); margin-top: 15px;}
+        input { width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc; box-sizing: border-box; }
+        .btn { background: var(--accent); color: white; border: none; padding: 12px 20px; border-radius: 5px; cursor: pointer; font-weight: bold; margin-top: 20px; width: 100%;}
+        
+        /* Guard List */
+        .controls { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        select { padding: 8px; border-radius: 5px; }
+        .roster-item { display: flex; justify-content: space-between; border-bottom: 1px solid #eee; padding: 15px 0; }
+        .roster-item:last-child { border-bottom: none; }
+        .urgent { color: #ef4444; font-weight: bold; }
     </style>
 </head>
 <body>
 
     <header>
-        <div class="logo">Aegis <span>Security Solutions</span></div>
+        <div class="logo">Aegis <span>Security</span></div>
         <div class="nav-links">
-            <a href="index.html">Portal Home</a>
-            <a href="admin.html">Admin Dashboard</a>
+            <button onclick="showPage('home')">Company Info</button>
+            <button onclick="showPage('list')">Guard Roster</button>
+            <button onclick="showPage('apply')">Self Application</button>
+            <a href="admin.html" style="border-left: 1px solid #475569; padding-left: 20px;">Admin Panel</a>
         </div>
     </header>
 
-    <div class="container">
-        <h2>Personnel Registration</h2>
-        <p class="subtitle">Please enter the security personnel's credentials into the centralized database.</p>
-        
-        <form id="guardForm">
-            <label>Full Legal Name</label>
-            <input type="text" id="name" placeholder="e.g., Juan Dela Cruz" required>
+    <div id="home" class="page-section active-section card">
+        <h1>Welcome to Aegis Security Solutions</h1>
+        <p>Aegis Security Solutions is the premier provider of highly trained, licensed security personnel. We specialize in corporate, residential, and event security, ensuring peace of mind through vigilant protection and modern tracking systems.</p>
+        <p>Our commitment to excellence means our guards are always up-to-date with their certifications and training. Use the navigation above to view our active roster or apply to join our elite team.</p>
+    </div>
 
+    <div id="list" class="page-section card">
+        <div class="controls">
+            <h2>Active Guard Roster</h2>
+            <select id="sortOrder" onchange="loadApprovedGuards()">
+                <option value="date">Sort by: Expiration Date (Nearest First)</option>
+                <option value="name">Sort by: Name (A-Z)</option>
+            </select>
+        </div>
+        <div id="roster-container">Loading data...</div>
+    </div>
+
+    <div id="apply" class="page-section card">
+        <h2>Personnel Self-Application</h2>
+        <p>Submit your credentials for administrative review.</p>
+        <form id="applyForm">
+            <label>Full Name</label>
+            <input type="text" id="name" required>
             <label>License Number</label>
-            <input type="text" id="license_number" placeholder="Enter license ID" required>
-
-            <label>Contact Email</label>
-            <input type="email" id="email" placeholder="guard@example.com" required>
-
+            <input type="text" id="license" required>
+            <label>Email Address</label>
+            <input type="email" id="email" required>
             <label>License Expiration Date</label>
-            <input type="date" id="expiration_date" required>
-
-            <button type="submit" class="btn-submit">Submit Record</button>
+            <input type="date" id="exp_date" required>
+            <button type="submit" class="btn">Submit Application</button>
         </form>
     </div>
 
     <script>
-        // 1. Initialize Supabase 
+        // --- NAVIGATION LOGIC ---
+        function showPage(pageId) {
+            document.querySelectorAll('.page-section').forEach(el => el.classList.remove('active-section'));
+            document.getElementById(pageId).classList.add('active-section');
+            if(pageId === 'list') loadApprovedGuards();
+        }
+
+        // --- DATABASE LOGIC ---
         const SUPABASE_URL = 'https://tojcimhuslpbpkmkvvsz.supabase.co';
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRvamNpbWh1c2xwYnBrbWt2dnN6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMxMDg0MDcsImV4cCI6MjA4ODY4NDQwN30.rmatxYCKks8CKhdtesRwrITx06he4-AjgmLhlsEFzxo';
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        // 2. Save Data to Supabase
-        document.getElementById('guardForm').addEventListener('submit', async function(e) {
-            e.preventDefault(); 
-            const submitBtn = document.querySelector('.btn-submit');
-            submitBtn.innerText = "Processing...";
+        // Submit Application
+        document.getElementById('applyForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const payload = {
+                name: document.getElementById('name').value,
+                license_number: document.getElementById('license').value,
+                email: document.getElementById('email').value,
+                expiration_date: document.getElementById('exp_date').value,
+                status: 'pending' // Sends straight to admin review
+            };
 
-            const name = document.getElementById('name').value;
-            const license_number = document.getElementById('license_number').value;
-            const email = document.getElementById('email').value;
-            const expiration_date = document.getElementById('expiration_date').value;
-
-            const { data, error } = await supabaseClient.from('guards').insert([
-                { name: name, license_number: license_number, email: email, expiration_date: expiration_date }
-            ]);
-
-            if (error) {
-                alert("System Error: " + error.message);
-                console.error(error);
-                submitBtn.innerText = "Submit Record";
-            } else {
-                alert("Success: Personnel record securely registered.");
-                document.getElementById('guardForm').reset(); 
-                submitBtn.innerText = "Submit Record";
+            const { error } = await supabaseClient.from('guards').insert([payload]);
+            if (error) alert("Error: " + error.message);
+            else {
+                alert("Application submitted! Pending admin approval.");
+                document.getElementById('applyForm').reset();
             }
         });
+
+        // Load and Sort Approved Guards
+        async function loadApprovedGuards() {
+            const container = document.getElementById('roster-container');
+            container.innerHTML = "Fetching secure records...";
+
+            const { data, error } = await supabaseClient.from('guards').select('*').eq('status', 'approved');
+            
+            if (error) { container.innerHTML = "Error loading data."; return; }
+            if (data.length === 0) { container.innerHTML = "No active guards found."; return; }
+
+            // Sorting Logic
+            const sortType = document.getElementById('sortOrder').value;
+            data.sort((a, b) => {
+                if (sortType === 'date') return new Date(a.expiration_date) - new Date(b.expiration_date);
+                if (sortType === 'name') return a.name.localeCompare(b.name);
+            });
+
+            container.innerHTML = '';
+            data.forEach(guard => {
+                // Check if expiration is within 30 days to highlight it red
+                const daysUntilExp = (new Date(guard.expiration_date) - new Date()) / (1000 * 60 * 60 * 24);
+                const dateClass = daysUntilExp < 30 ? 'urgent' : '';
+
+                container.innerHTML += `
+                    <div class="roster-item">
+                        <strong>${guard.name}</strong>
+                        <span class="${dateClass}">Expires: ${guard.expiration_date}</span>
+                    </div>
+                `;
+            });
+        }
     </script>
 </body>
 </html>
-
