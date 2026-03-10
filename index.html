@@ -7,65 +7,36 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         :root { 
-            --primary: #0f172a; 
-            --accent: #16a34a;  
-            --bg: #f8fafc;       
-            --text: #334155;     
-            --light-green-bg: #e0f2f1; 
+            --primary: #0f172a; --accent: #16a34a; --bg: #f8fafc; --text: #334155; --light-green-bg: #e0f2f1; 
             --placeholder-hero-url: url('https://images.unsplash.com/photo-1510511459019-5efa7c243774?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'); 
         }
         body { font-family: 'Inter', sans-serif; margin: 0; background: #fff; color: var(--text); }
         
-        /* Navigation Bar */
-        header { 
-            background: #fff; color: var(--primary); padding: 15px 40px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e2e8f0;
-        }
+        header { background: #fff; color: var(--primary); padding: 15px 40px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e2e8f0; }
         .logo { font-size: 1.5em; font-weight: 700; display: flex; align-items: center; gap: 8px; }
         .logo span { color: var(--accent); }
         
         .nav-links { display: flex; gap: 20px; align-items: center;}
-        .nav-links button, .nav-links a { 
-            background: none; border: none; color: var(--text); font-size: 1em; font-family: 'Inter'; cursor: pointer; text-decoration: none; font-weight: 500;
-        }
+        .nav-links button, .nav-links a { background: none; border: none; color: var(--text); font-size: 1em; font-family: 'Inter'; cursor: pointer; text-decoration: none; font-weight: 500; }
         .nav-links a.active { color: var(--accent); }
         .nav-links button:hover, .nav-links a:hover { color: var(--accent); }
         .nav-links .btn-admin { border: 1px solid var(--accent); padding: 8px 15px; border-radius: 5px; color: var(--accent); margin-left: 20px;}
 
-        /* Home (Hero) Section */
-        #home-hero {
-            position: relative;
-            background-image: var(--placeholder-hero-url);
-            background-size: cover;
-            background-position: center;
-            height: 90vh;
-            color: white;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-        }
-        #home-hero::before {
-            content: '';
-            position: absolute; top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.6); 
-        }
+        #home-hero { position: relative; background-image: var(--placeholder-hero-url); background-size: cover; background-position: center; height: 90vh; color: white; display: flex; justify-content: center; align-items: center; text-align: center; }
+        #home-hero::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.6); }
         .hero-content { position: relative; z-index: 10; max-width: 80%; }
         .hero-title { font-size: 3em; font-weight: 700; margin-bottom: 20px; color: #fff;}
         .hero-subtitle { font-size: 1.2em; max-width: 800px; margin: 0 auto 30px auto; color: #fff;}
         
-        /* Apply Call-to-action Section */
         #apply-cta { background: var(--accent); color: white; text-align: center; padding: 80px 20px; }
         .apply-dots { font-size: 2em; color: var(--light-green-bg); margin-bottom: 20px; }
         .apply-dots span { margin: 0 5px; cursor: pointer;}
         .apply-dots .active-dot { color: #fff; }
         .apply-title { font-size: 2.5em; font-weight: 700; margin-bottom: 15px; color: #fff;}
         .apply-subtitle { font-size: 1.2em; margin-bottom: 30px; color: #cbd5e1;}
-        .btn-transparent-white { 
-            background: none; border: 2px solid white; color: white; padding: 12px 25px; border-radius: 5px; cursor: pointer; font-weight: bold; font-size: 1.1em; text-decoration: none; display: inline-block;
-        }
+        .btn-transparent-white { background: none; border: 2px solid white; color: white; padding: 12px 25px; border-radius: 5px; cursor: pointer; font-weight: bold; font-size: 1.1em; text-decoration: none; display: inline-block; }
         .btn-transparent-white:hover { background: white; color: var(--accent); }
 
-        /* FAQ Section */
         #faq { padding: 60px 40px; background: #fff; }
         .faq-title { text-align: center; color: var(--primary); font-size: 2em; margin-bottom: 40px;}
         .faq-item { border-bottom: 1px solid #e2e8f0; padding: 20px 0; cursor: pointer;}
@@ -74,15 +45,27 @@
         .faq-answer { display: none; margin-top: 15px; color: var(--text); line-height: 1.6;}
         .back-to-top { position: fixed; bottom: 20px; right: 20px; background: #fff; color: var(--accent); border: 2px solid var(--accent); padding: 10px; border-radius: 50%; cursor: pointer; text-align: center; font-size: 1.2em; z-index: 100;}
         
-        /* Contact Form Section */
         #contact { padding: 80px 40px; background: #fff; }
         .contact-card { background: var(--bg); padding: 40px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); max-width: 600px; margin: 0 auto; border: 1px solid #e2e8f0;}
         .contact-title { text-align: center; color: var(--primary); font-size: 2em; margin-bottom: 30px;}
         .form-box { background: white; border: 1px solid #e2e8f0; padding: 20px; border-radius: 5px;}
         label { display: block; font-weight: 500; margin-bottom: 5px; color: var(--primary); margin-top: 15px;}
-        input, textarea { width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc; box-sizing: border-box; }
+        input, textarea { width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc; box-sizing: border-box; font-family: 'Inter'; }
         textarea { height: 120px; resize: vertical; }
-        .btn-green-solid { background: var(--accent); color: white; border: none; padding: 12px 20px; border-radius: 5px; cursor: pointer; font-weight: bold; margin-top: 20px; width: 100%;}
+        .btn-green-solid { background: var(--accent); color: white; border: none; padding: 12px 20px; border-radius: 5px; cursor: pointer; font-weight: bold; margin-top: 20px; width: 100%; font-family: 'Inter'; font-size: 1em;}
+
+        /* MOBILE RESPONSIVE CSS */
+        @media (max-width: 768px) {
+            header { flex-direction: column; padding: 20px; gap: 15px; }
+            .nav-links { flex-wrap: wrap; justify-content: center; gap: 10px; }
+            .nav-links .btn-admin { margin-left: 0; width: 100%; text-align: center; }
+            .hero-title { font-size: 2.2em; }
+            .hero-subtitle { font-size: 1em; }
+            .hero-content { max-width: 95%; }
+            #apply-cta, #faq, #contact { padding: 50px 20px; }
+            .apply-title { font-size: 1.8em; }
+            .contact-card { padding: 20px; }
+        }
     </style>
 </head>
 <body>
@@ -102,13 +85,11 @@
             <div class="hero-content">
                 <h1 class="hero-title">Uncompromising Security for a Changing World</h1>
                 <p class="hero-subtitle">Aegis Security Solutions is the premier provider of highly trained, licensed security personnel. We ensure peace of mind through vigilant protection and modern tracking systems.</p>
-                </div>
+            </div>
         </section>
 
         <section id="apply-cta">
-            <div class="apply-dots">
-                <span class="active-dot">•</span><span>•</span><span>•</span>
-            </div>
+            <div class="apply-dots"><span class="active-dot">•</span><span>•</span><span>•</span></div>
             <h2 class="apply-title">Build a Future with Aegis Security Solutions</h2>
             <p class="apply-subtitle">Join our elite team and elevate your career in modern security.</p>
             <a href="apply.html" target="_blank" class="btn-transparent-white">Apply Now</a>
@@ -118,17 +99,11 @@
             <h2 class="faq-title">Frequently Asked Questions</h2>
             <div class="faq-list" style="max-width: 800px; margin: 0 auto;">
                 <div class="faq-item" onclick="toggleFaq(1)">
-                    <div class="faq-question">
-                        <span>What kind of opportunities are available at Aegis Security Solutions?</span>
-                        <span>▼</span>
-                    </div>
+                    <div class="faq-question"><span>What kind of opportunities are available at Aegis Security Solutions?</span><span>▼</span></div>
                     <p class="faq-answer">We offer a wide range of career opportunities, from field security and event protection to corporate administration and modern surveillance systems. We welcome both experienced professionals and individuals seeking fresh entry-level opportunities.</p>
                 </div>
                 <div class="faq-item" onclick="toggleFaq(2)">
-                    <div class="faq-question">
-                        <span>What are the requirements to join the active roster?</span>
-                        <span>▼</span>
-                    </div>
+                    <div class="faq-question"><span>What are the requirements to join the active roster?</span><span>▼</span></div>
                     <p class="faq-answer">All applicants must hold a valid, up-to-date security license and pass our preliminary administrative review. Once your application is submitted via our portal, our team will review your credentials for approval.</p>
                 </div>
             </div>
@@ -141,7 +116,6 @@
                 <form action="https://formsubmit.co/lewynvllram@gmail.com" method="POST">
                     <input type="hidden" name="_next" value="https://lewynski.github.io/guard-license-tracker/index.html">
                     <input type="hidden" name="_captcha" value="false">
-                    
                     <div class="form-box">
                         <label>Full Name</label>
                         <input type="text" name="name" required>
@@ -161,7 +135,6 @@
             const item = document.querySelector(`#faq .faq-item:nth-child(${itemId})`);
             const answer = item.querySelector('.faq-answer');
             const arrow = item.querySelector('.faq-question span:last-child');
-            
             answer.style.display = answer.style.display === 'block' ? 'none' : 'block';
             arrow.innerHTML = answer.style.display === 'block' ? '▲' : '▼';
         }
