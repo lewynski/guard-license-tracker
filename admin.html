@@ -35,19 +35,19 @@
     <div id="guard-list">Loading guards...</div>
 
     <script>
-        // 1. Initialize Supabase (Replace these with your actual Supabase project details)
+        // 1. Initialize Supabase (Using supabaseClient to fix the naming bug)
         const SUPABASE_URL = 'https://tojcimhuslpbpkmkvvsz.supabase.co';
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRvamNpbWh1c2xwYnBrbWt2dnN6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMxMDg0MDcsImV4cCI6MjA4ODY4NDQwN30.rmatxYCKks8CKhdtesRwrITx06he4-AjgmLhlsEFzxo';
         
-        const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
         // 2. Function to fetch and display the list of guards
         async function fetchGuards() {
             const guardListDiv = document.getElementById('guard-list');
             guardListDiv.innerHTML = 'Loading...';
 
-            // Pull data from the 'guards' table
-            const { data, error } = await supabase.from('guards').select('*');
+            // Pull data from the 'guards' table using supabaseClient
+            const { data, error } = await supabaseClient.from('guards').select('*');
 
             if (error) {
                 console.error("Error fetching data:", error);
@@ -79,7 +79,8 @@
             // Confirm with the admin before deleting
             if (!confirm("Are you sure you want to remove this guard?")) return;
 
-            const { error } = await supabase.from('guards').delete().eq('id', guardId);
+            // Delete using supabaseClient
+            const { error } = await supabaseClient.from('guards').delete().eq('id', guardId);
 
             if (error) {
                 alert("Failed to delete the guard.");
@@ -96,6 +97,4 @@
     </script>
 
 </body>
-
 </html>
-
