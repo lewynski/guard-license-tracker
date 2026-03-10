@@ -46,10 +46,10 @@
     </div>
 
     <script>
-        // 1. Initialize Supabase (Use the SAME keys you used in admin.html)
+        // 1. Initialize Supabase (Using supabaseClient to fix the naming bug)
         const SUPABASE_URL = 'https://tojcimhuslpbpkmkvvsz.supabase.co';
-        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRvamNpbWh1c2xwYnBrbWt2dnN6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMxMDg0MDcsImV4cCI6MjA4ODY4NDQwN30.rmatxYCKks8CKhdtesRwrITx06he4-AjgmLhlsEFzxo';
-        const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY';
+        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
         // 2. AI Scanner Function (Tesseract.js)
         async function scanID() {
@@ -69,11 +69,8 @@
                 const result = await Tesseract.recognize(imageFile, 'eng');
                 const extractedText = result.data.text;
                 
-                statusText.innerText = "Scan complete! Review the extracted text in the console to map it to the form.";
+                statusText.innerText = "Scan complete! Review the extracted text in the console.";
                 console.log("AI Extracted Text:", extractedText);
-                
-                // Note: To automatically fill the form, you will need to write a small 
-                // JavaScript function here that searches 'extractedText' for dates/numbers.
                 
             } catch (error) {
                 statusText.innerText = "Error scanning image.";
@@ -90,8 +87,8 @@
             const email = document.getElementById('email').value;
             const expiration_date = document.getElementById('expiration_date').value;
 
-            // Insert into the 'guards' table
-            const { data, error } = await supabase.from('guards').insert([
+            // Insert into the 'guards' table using supabaseClient
+            const { data, error } = await supabaseClient.from('guards').insert([
                 { name: name, license_number: license_number, email: email, expiration_date: expiration_date }
             ]);
 
@@ -105,6 +102,4 @@
         });
     </script>
 </body>
-
 </html>
-
