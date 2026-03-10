@@ -4,16 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aegis Security Solutions</title>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         :root { 
-            --primary: #0f172a; /* Dark gray for text and primary elements */
-            --accent: #16a34a;  /* Bright green from your concept */
-            --bg: #f8fafc;       /* Light gray background for cards */
-            --text: #334155;     /* Darker gray for body text */
-            --light-green-bg: #e0f2f1; /* Light green for list items, etc. */
-            --placeholder-hero-url: url('https://images.unsplash.com/photo-1510511459019-5efa7c243774?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'); /* Security/City aesthetic */
+            --primary: #0f172a; 
+            --accent: #16a34a;  
+            --bg: #f8fafc;       
+            --text: #334155;     
+            --light-green-bg: #e0f2f1; 
+            --placeholder-hero-url: url('https://images.unsplash.com/photo-1510511459019-5efa7c243774?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'); 
         }
         body { font-family: 'Inter', sans-serif; margin: 0; background: #fff; color: var(--text); }
         
@@ -28,15 +27,10 @@
         .nav-links button, .nav-links a { 
             background: none; border: none; color: var(--text); font-size: 1em; font-family: 'Inter'; cursor: pointer; text-decoration: none; font-weight: 500;
         }
-        .nav-links button.active, .nav-links a.active { color: var(--accent); }
+        .nav-links a.active { color: var(--accent); }
         .nav-links button:hover, .nav-links a:hover { color: var(--accent); }
         .nav-links .btn-admin { border: 1px solid var(--accent); padding: 8px 15px; border-radius: 5px; color: var(--accent); margin-left: 20px;}
 
-        /* Page Container and Section Management */
-        .page-container { position: relative; }
-        .page-section { display: none; }
-        .active-section { display: block; }
-        
         /* Home (Hero) Section */
         #home-hero {
             position: relative;
@@ -53,34 +47,23 @@
         #home-hero::before {
             content: '';
             position: absolute; top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.6); /* Darker overlay for text readability */
+            background: rgba(0,0,0,0.6); 
         }
-        .hero-content {
-            position: relative;
-            z-index: 10;
-            max-width: 80%;
-        }
+        .hero-content { position: relative; z-index: 10; max-width: 80%; }
         .hero-title { font-size: 3em; font-weight: 700; margin-bottom: 20px; color: #fff;}
         .hero-subtitle { font-size: 1.2em; max-width: 800px; margin: 0 auto 30px auto; color: #fff;}
-        .hero-social-text { font-size: 0.9em; color: #cbd5e1; margin-bottom: 15px;}
-        .hero-social-icons { display: flex; gap: 20px; justify-content: center; font-size: 1.2em; }
-        .hero-social-icons a { color: #fff; text-decoration: none; font-weight: bold; }
         
         /* Apply Call-to-action Section */
-        #apply-cta {
-            background: var(--accent);
-            color: white;
-            text-align: center;
-            padding: 80px 20px;
-        }
+        #apply-cta { background: var(--accent); color: white; text-align: center; padding: 80px 20px; }
         .apply-dots { font-size: 2em; color: var(--light-green-bg); margin-bottom: 20px; }
         .apply-dots span { margin: 0 5px; cursor: pointer;}
         .apply-dots .active-dot { color: #fff; }
         .apply-title { font-size: 2.5em; font-weight: 700; margin-bottom: 15px; color: #fff;}
         .apply-subtitle { font-size: 1.2em; margin-bottom: 30px; color: #cbd5e1;}
         .btn-transparent-white { 
-            background: none; border: 2px solid white; color: white; padding: 12px 25px; border-radius: 5px; cursor: pointer; font-weight: bold; font-size: 1.1em;
+            background: none; border: 2px solid white; color: white; padding: 12px 25px; border-radius: 5px; cursor: pointer; font-weight: bold; font-size: 1.1em; text-decoration: none; display: inline-block;
         }
+        .btn-transparent-white:hover { background: white; color: var(--accent); }
 
         /* FAQ Section */
         #faq { padding: 60px 40px; background: #fff; }
@@ -93,89 +76,45 @@
         
         /* Contact Form Section */
         #contact { padding: 80px 40px; background: #fff; }
-        .contact-card { background: var(--bg); padding: 40px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); max-width: 600px; margin: 0 auto; }
+        .contact-card { background: var(--bg); padding: 40px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); max-width: 600px; margin: 0 auto; border: 1px solid #e2e8f0;}
         .contact-title { text-align: center; color: var(--primary); font-size: 2em; margin-bottom: 30px;}
         .form-box { background: white; border: 1px solid #e2e8f0; padding: 20px; border-radius: 5px;}
-        
-        /* Content Styling (Roster and Application Form) */
-        .card { background: var(--bg); padding: 30px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 20px; border: 1px solid #e2e8f0; }
-        h1, h2 { color: var(--primary); margin-top: 0; }
-        h2.centered { text-align: center; font-size: 2em; margin-bottom: 40px;}
-        
-        /* Form */
         label { display: block; font-weight: 500; margin-bottom: 5px; color: var(--primary); margin-top: 15px;}
         input, textarea { width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc; box-sizing: border-box; }
         textarea { height: 120px; resize: vertical; }
         .btn-green-solid { background: var(--accent); color: white; border: none; padding: 12px 20px; border-radius: 5px; cursor: pointer; font-weight: bold; margin-top: 20px; width: 100%;}
-        
-        /* Guard List (Roster) */
-        #list { padding: 60px 40px; max-width: 1000px; margin: 0 auto; }
-        .controls { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        select { padding: 8px; border-radius: 5px; border: 1px solid #ccc;}
-        .roster-item { display: flex; justify-content: space-between; border-bottom: 1px solid #eee; padding: 15px; background: #fff; border-radius: 5px; margin-bottom: 10px; }
-        .roster-item:hover { background: var(--light-green-bg); }
-        .roster-item:last-child { border-bottom: none; }
-        .urgent { color: #ef4444; font-weight: bold; }
-
-        /* Application Form Section */
-        #apply { padding: 60px 40px; background: #fff; max-width: 800px; margin: 0 auto;}
-
     </style>
 </head>
 <body>
 
     <header>
-        <div class="logo">
-            Aegis <span>Security</span>
-        </div>
+        <div class="logo">Aegis <span>Security</span></div>
         <div class="nav-links">
-            <button id="nav-home" onclick="showPage('home')" class="active">Home</button>
-            <button id="nav-list" onclick="showPage('list')">Guard Roster</button>
-            <button id="nav-contact" onclick="scrollToSection('contact')">Contacts</button>
-            <a href="admin.html" class="btn-admin">Admin Panel</a>
+            <a href="index.html" class="active">Home</a>
+            <a href="roster.html" target="_blank">Guard Roster</a>
+            <button onclick="document.getElementById('contact').scrollIntoView({ behavior: 'smooth' })">Contacts</button>
+            <a href="admin.html" target="_blank" class="btn-admin">Admin Panel</a>
         </div>
     </header>
 
     <div class="page-container">
-        <section id="home-hero" class="page-section active-section">
+        <section id="home-hero">
             <div class="hero-content">
                 <h1 class="hero-title">Uncompromising Security for a Changing World</h1>
                 <p class="hero-subtitle">Aegis Security Solutions is the premier provider of highly trained, licensed security personnel. We ensure peace of mind through vigilant protection and modern tracking systems.</p>
-                <p class="hero-social-text">Follow our social media accounts to stay updated!</p>
-                <div class="hero-social-icons">
-                    <a href="#">Fb</a>
-                    <a href="#">Tw</a>
-                    <a href="#">In</a>
                 </div>
-            </div>
         </section>
 
-        <section id="apply-cta" class="page-section">
+        <section id="apply-cta">
             <div class="apply-dots">
-                <span class="active-dot">•</span>
-                <span>•</span>
-                <span>•</span>
+                <span class="active-dot">•</span><span>•</span><span>•</span>
             </div>
             <h2 class="apply-title">Build a Future with Aegis Security Solutions</h2>
             <p class="apply-subtitle">Join our elite team and elevate your career in modern security.</p>
-            <button class="btn-transparent-white" onclick="showApplyForm()">Apply Now</button>
+            <a href="apply.html" target="_blank" class="btn-transparent-white">Apply Now</a>
         </section>
 
-        <section id="list" class="page-section">
-            <h2 class="centered">Active Guard Roster</h2>
-            <div class="card">
-                <div class="controls">
-                    <h3>Active Personnel List</h3>
-                    <select id="sortOrder" onchange="loadApprovedGuards()">
-                        <option value="date">Sort by: Expiration Date (Nearest First)</option>
-                        <option value="name">Sort by: Name (A-Z)</option>
-                    </select>
-                </div>
-                <div id="roster-container">Fetching live records...</div>
-            </div>
-        </section>
-
-        <section id="faq" class="page-section active-section">
+        <section id="faq">
             <h2 class="faq-title">Frequently Asked Questions</h2>
             <div class="faq-list" style="max-width: 800px; margin: 0 auto;">
                 <div class="faq-item" onclick="toggleFaq(1)">
@@ -193,88 +132,31 @@
                     <p class="faq-answer">All applicants must hold a valid, up-to-date security license and pass our preliminary administrative review. Once your application is submitted via our portal, our team will review your credentials for approval.</p>
                 </div>
             </div>
-            <button class="back-to-top" onclick="scrollToTop()">▲</button>
+            <button class="back-to-top" onclick="window.scrollTo({ top: 0, behavior: 'smooth' })">▲</button>
         </section>
         
-        <section id="contact" class="page-section active-section">
+        <section id="contact">
             <h2 class="contact-title">Contact Us</h2>
             <div class="contact-card">
-                <form id="contactForm">
+                <form action="https://formsubmit.co/lewynvllram@gmail.com" method="POST">
+                    <input type="hidden" name="_next" value="https://lewynski.github.io/guard-license-tracker/index.html">
+                    <input type="hidden" name="_captcha" value="false">
+                    
                     <div class="form-box">
                         <label>Full Name</label>
-                        <input type="text" id="contact_name" required>
+                        <input type="text" name="name" required>
                         <label>Email Address</label>
-                        <input type="email" id="contact_email" required>
+                        <input type="email" name="email" required>
                         <label>Message</label>
-                        <textarea id="contact_message" required placeholder="How can we help you today?"></textarea>
+                        <textarea name="message" required placeholder="How can we help you today?"></textarea>
                     </div>
                     <button type="submit" class="btn-green-solid">Send Message</button>
                 </form>
             </div>
         </section>
-
-        <section id="apply" class="page-section">
-            <h2 class="centered">Personnel Self-Application Form</h2>
-            <div class="card">
-                <p>Submit your credentials for administrative review and join our elite team.</p>
-                <form id="applyForm">
-                    <label>Full Name</label>
-                    <input type="text" id="name" required>
-                    <label>License Number</label>
-                    <input type="text" id="license" required>
-                    <label>Email Address</label>
-                    <input type="email" id="email" required>
-                    <label>License Expiration Date</label>
-                    <input type="date" id="exp_date" required>
-                    <button type="submit" class="btn-green-solid">Submit Application</button>
-                </form>
-            </div>
-        </section>
-
     </div>
 
     <script>
-        // --- PAGE LOGIC ---
-        function showPage(pageId) {
-            // Hide all sections first
-            document.querySelectorAll('.page-section').forEach(el => el.classList.remove('active-section'));
-            
-            // Set nav links as inactive
-            document.querySelectorAll('.nav-links button').forEach(el => el.classList.remove('active'));
-            
-            // Show the combination for home, or a single section otherwise
-            if (pageId === 'home') {
-                document.getElementById('home-hero').classList.add('active-section');
-                document.getElementById('apply-cta').classList.add('active-section');
-                document.getElementById('faq').classList.add('active-section');
-                document.getElementById('contact').classList.add('active-section');
-                document.getElementById('nav-home').classList.add('active');
-            } else if (pageId === 'list') {
-                document.getElementById('list').classList.add('active-section');
-                document.getElementById('nav-list').classList.add('active');
-                loadApprovedGuards(); // Load data when roster page is shown
-            } else if (pageId === 'apply') {
-                document.getElementById('apply').classList.add('active-section');
-            }
-        }
-        
-        // Show the application form when "Apply Now" is clicked
-        function showApplyForm() {
-            showPage('apply');
-            scrollToTop();
-        }
-
-        // --- SECTION NAVIGATION LOGIC ---
-        function scrollToSection(sectionId) {
-            showPage('home');
-            document.getElementById(sectionId).scrollIntoView({ behavior: 'smooth' });
-        }
-        
-        function scrollToTop() {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-        
-        // --- FAQ LOGIC ---
         function toggleFaq(itemId) {
             const item = document.querySelector(`#faq .faq-item:nth-child(${itemId})`);
             const answer = item.querySelector('.faq-answer');
@@ -283,68 +165,6 @@
             answer.style.display = answer.style.display === 'block' ? 'none' : 'block';
             arrow.innerHTML = answer.style.display === 'block' ? '▲' : '▼';
         }
-
-        // --- DATABASE LOGIC ---
-        const SUPABASE_URL = 'https://tojcimhuslpbpkmkvvsz.supabase.co';
-        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRvamNpbWh1c2xwYnBrbWt2dnN6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMxMDg0MDcsImV4cCI6MjA4ODY4NDQwN30.rmatxYCKks8CKhdtesRwrITx06he4-AjgmLhlsEFzxo';
-        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-        // Submit Application
-        document.getElementById('applyForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const payload = {
-                name: document.getElementById('name').value,
-                license_number: document.getElementById('license').value,
-                email: document.getElementById('email').value,
-                expiration_date: document.getElementById('exp_date').value,
-                status: 'pending' // Sends straight to admin review
-            };
-
-            const { error } = await supabaseClient.from('guards').insert([payload]);
-            if (error) alert("Error: " + error.message);
-            else {
-                alert("Application submitted! Pending admin approval.");
-                document.getElementById('applyForm').reset();
-            }
-        });
-
-        // Load and Sort Approved Guards
-        async function loadApprovedGuards() {
-            const container = document.getElementById('roster-container');
-            container.innerHTML = "Fetching live records...";
-
-            const { data, error } = await supabaseClient.from('guards').select('*').eq('status', 'approved');
-            
-            if (error) { container.innerHTML = "Error loading data."; return; }
-            if (data.length === 0) { container.innerHTML = "No active guards found."; return; }
-
-            // Sorting Logic
-            const sortType = document.getElementById('sortOrder').value;
-            data.sort((a, b) => {
-                if (sortType === 'date') return new Date(a.expiration_date) - new Date(b.expiration_date);
-                if (sortType === 'name') return a.name.localeCompare(b.name);
-            });
-
-            container.innerHTML = '';
-            data.forEach(guard => {
-                const daysUntilExp = (new Date(guard.expiration_date) - new Date()) / (1000 * 60 * 60 * 24);
-                const dateClass = daysUntilExp < 30 ? 'urgent' : '';
-
-                container.innerHTML += `
-                    <div class="roster-item">
-                        <strong>${guard.name}</strong>
-                        <span class="${dateClass}">Expires: ${guard.expiration_date}</span>
-                    </div>
-                `;
-            });
-        }
-        
-        // Prevent generic contact form submission refresh for the demo
-        document.getElementById('contactForm').addEventListener('submit', (e) => {
-            e.preventDefault();
-            alert('Message Sent!');
-            document.getElementById('contactForm').reset();
-        });
     </script>
 </body>
 </html>
