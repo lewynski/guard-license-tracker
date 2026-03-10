@@ -3,96 +3,142 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Panel - Guard Licenses</title>
+    <title>Admin Dashboard | Aegis Security</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: Arial, sans-serif; padding: 20px; background-color: #f4f4f9; }
-        .guard-card { 
-            background: white; 
-            padding: 15px; 
-            margin-bottom: 10px; 
-            border-radius: 8px; 
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        :root {
+            --primary-color: #0f172a; 
+            --accent-color: #2563eb; 
+            --bg-color: #f8fafc; 
+            --text-color: #334155;
+            --danger-color: #ef4444;
+        }
+        body { font-family: 'Inter', sans-serif; margin: 0; background-color: var(--bg-color); color: var(--text-color); }
+        
+        /* Navbar Styling */
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 15px 40px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
-        .guard-details { margin: 0; }
+        .logo { font-size: 1.5em; font-weight: 700; letter-spacing: 0.5px; }
+        .logo span { color: var(--accent-color); }
+        .nav-links a { color: #cbd5e1; text-decoration: none; margin-left: 20px; font-weight: 500; transition: color 0.3s; }
+        .nav-links a:hover { color: white; }
+
+        /* Dashboard Layout */
+        .container { max-width: 900px; margin: 40px auto; padding: 0 20px; }
+        .dashboard-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #e2e8f0; padding-bottom: 15px; margin-bottom: 30px; }
+        .dashboard-header h2 { margin: 0; color: var(--primary-color); }
+        
+        /* Card Grid */
+        #guard-list { display: grid; gap: 20px; grid-template-columns: repeat(auto-fill, minmax(400px, 1fr)); }
+        
+        .guard-card { 
+            background: white; 
+            padding: 25px; 
+            border-radius: 10px; 
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            border-left: 5px solid var(--accent-color);
+            position: relative;
+        }
+        .guard-details h3 { margin: 0 0 15px 0; color: var(--primary-color); font-size: 1.2em; }
+        .guard-details p { margin: 8px 0; font-size: 0.95em; color: #475569; }
+        .guard-details strong { color: var(--primary-color); }
+        
         .delete-btn { 
-            background: #ff4d4d; 
-            color: white; 
-            border: none; 
-            padding: 8px 12px; 
+            background: white; 
+            color: var(--danger-color); 
+            border: 1px solid var(--danger-color); 
+            padding: 6px 12px; 
             cursor: pointer; 
             border-radius: 4px;
+            font-weight: 500;
+            font-size: 0.85em;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            transition: all 0.2s;
         }
+        .delete-btn:hover { background: var(--danger-color); color: white; }
     </style>
 </head>
 <body>
 
-    <h2>Security Guard Database (Admin Panel)</h2>
+    <header>
+        <div class="logo">Aegis <span>Security Solutions</span></div>
+        <div class="nav-links">
+            <a href="index.html">Portal Home</a>
+            <a href="admin.html">Admin Dashboard</a>
+        </div>
+    </header>
     
-    <div id="guard-list">Loading guards...</div>
+    <div class="container">
+        <div class="dashboard-header">
+            <h2>Active Roster & License Status</h2>
+        </div>
+        <div id="guard-list">Loading secure database...</div>
+    </div>
 
     <script>
-        // 1. Initialize Supabase (Using supabaseClient to fix the naming bug)
+        // 1. Initialize Supabase
         const SUPABASE_URL = 'https://tojcimhuslpbpkmkvvsz.supabase.co';
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRvamNpbWh1c2xwYnBrbWt2dnN6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMxMDg0MDcsImV4cCI6MjA4ODY4NDQwN30.rmatxYCKks8CKhdtesRwrITx06he4-AjgmLhlsEFzxo';
-        
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        // 2. Function to fetch and display the list of guards
+        // 2. Fetch and display guards
         async function fetchGuards() {
             const guardListDiv = document.getElementById('guard-list');
-            guardListDiv.innerHTML = 'Loading...';
+            guardListDiv.innerHTML = '<p style="text-align:center; width:100%; color:#64748b;">Syncing with database...</p>';
 
-            // Pull data from the 'guards' table using supabaseClient
             const { data, error } = await supabaseClient.from('guards').select('*');
 
             if (error) {
-                console.error("Error fetching data:", error);
-                guardListDiv.innerHTML = '<p>Error loading data.</p>';
+                guardListDiv.innerHTML = '<p style="color:red;">Error establishing secure connection.</p>';
                 return;
             }
 
-            // Clear the loading text
             guardListDiv.innerHTML = '';
+            
+            if (data.length === 0) {
+                guardListDiv.innerHTML = '<p>No personnel records found.</p>';
+                return;
+            }
 
-            // Display each guard as a card
             data.forEach(guard => {
                 const card = document.createElement('div');
                 card.className = 'guard-card';
                 card.innerHTML = `
                     <div class="guard-details">
                         <h3>${guard.name}</h3>
-                        <p><strong>License Number:</strong> ${guard.license_number}</p>
-                        <p><strong>Expiration Date:</strong> ${guard.expiration_date}</p>
+                        <p><strong>License ID:</strong> ${guard.license_number}</p>
+                        <p><strong>Contact:</strong> ${guard.email}</p>
+                        <p><strong>Expires On:</strong> ${guard.expiration_date}</p>
                     </div>
-                    <button class="delete-btn" onclick="deleteGuard(${guard.id})">Remove Guard</button>
+                    <button class="delete-btn" onclick="deleteGuard(${guard.id})">Revoke</button>
                 `;
                 guardListDiv.appendChild(card);
             });
         }
 
-        // 3. Function to delete a guard
+        // 3. Delete a guard
         async function deleteGuard(guardId) {
-            // Confirm with the admin before deleting
-            if (!confirm("Are you sure you want to remove this guard?")) return;
+            if (!confirm("WARNING: Are you sure you want to permanently revoke this record?")) return;
 
-            // Delete using supabaseClient
             const { error } = await supabaseClient.from('guards').delete().eq('id', guardId);
 
             if (error) {
-                alert("Failed to delete the guard.");
-                console.error(error);
+                alert("System Error: Could not remove record.");
             } else {
-                alert("Guard removed successfully!");
-                // Refresh the list so the deleted guard disappears
                 fetchGuards(); 
             }
         }
 
-        // 4. Run the fetch function when the page loads
         window.onload = fetchGuards;
     </script>
 
